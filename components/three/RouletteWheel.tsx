@@ -157,7 +157,7 @@ export default function RouletteWheel({ prizes, spinTo, onDone }: { prizes: Whee
     const look = { x: 0, y: 0 };
 
     let angle = Math.PI / 2 - seg / 2;
-    let anim: { from: number; to: number; t: number; dur: number; id: string } | null = null;
+    let anim: { from: number; to: number; t: number; dur: number; id: string; t0: number } | null = null;
     let lastSpin = 0;
     let flap = 0;
     let lastPeg = Math.floor(angle / seg);
@@ -175,12 +175,13 @@ export default function RouletteWheel({ prizes, spinTo, onDone }: { prizes: Whee
           const current = angle % (Math.PI * 2);
           let delta = (want - current) % (Math.PI * 2);
           if (delta < 0) delta += Math.PI * 2;
-          anim = { from: angle, to: angle + delta + Math.PI * 2 * (still ? 0 : 5), t: 0, dur: still ? 0.4 : 5.2, id: req.id };
+          anim = { from: angle, to: angle + delta + Math.PI * 2 * (still ? 0 : 5), t: 0, dur: still ? 0.4 : 5.2, id: req.id, t0: performance.now() };
           glow = null;
         }
       }
       if (anim) {
-        anim.t = Math.min(1, anim.t + dt / anim.dur);
+        // wall-clock time: a slow phone shows fewer frames of the spin, never a longer spin
+        anim.t = Math.min(1, (performance.now() - anim.t0) / 1000 / anim.dur);
         angle = anim.from + (anim.to - anim.from) * ease(anim.t);
         if (anim.t >= 1) {
           const id = anim.id;

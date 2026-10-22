@@ -5,7 +5,7 @@ import { useMemo, useRef, useState, useEffect } from 'react';
 import { CalendarDays, Clock, Inbox, CreditCard, Bot, TriangleAlert, ArrowRight, Unplug, MessageSquareText, Sparkles, Hourglass, ClipboardCheck, Images } from 'lucide-react';
 import { useStore } from '@/lib/store';
 import { DAY_SHORT, styleBySlug, zoneById, type ArtistId } from '@/lib/mock/studio';
-import { addDays, mondayOf, todayIso, weekday, hhmm, nowMin, ago, dayLong, durLabel, dayNum, cap } from '@/lib/dates';
+import { addDays, mondayOf, todayIso, weekday, hhmm, nowMin, ago, dayLong, durLabel, dayNum, cap, pl } from '@/lib/dates';
 import { bookedMinutes } from '@/lib/availability';
 import { CHANNEL, KIND, STATUS, shortName, SOURCE_COLOR, stageLabel } from '@/lib/panel';
 import { Avatar, Pic } from '../ui';
@@ -66,7 +66,7 @@ export function ManagerHome() {
       <div className="pn-body">
         <div className="kpis">
           <div className="kpi"><small>Citas esta semana</small><b>{weekAppts.length}</b><span className="sub">{Math.round(weekHours)} h de {Math.round(capacity)} h posibles</span></div>
-          <div className="kpi" style={{ animationDelay: '60ms' }}><small>Solicitudes sin asignar</small><b>{requests.length}</b><span className="sub">{requests.filter((p) => p.channel === 'chat').length} entraron por el asistente</span></div>
+          <div className="kpi" style={{ animationDelay: '60ms' }}><small>Solicitudes sin asignar</small><b>{requests.length}</b><span className="sub">{(() => { const n = requests.filter((p) => p.channel === 'chat').length; return n === 1 ? '1 entró por el asistente' : `${n} entraron por el asistente`; })()}</span></div>
           <div className="kpi" style={{ animationDelay: '120ms' }}><small>Huecos sin señal</small><b>{pendingDeposit.length}</b><span className="sub">guardados 48 h</span></div>
           <div className="kpi" style={{ animationDelay: '180ms' }}><small>Reservas del asistente</small><b>{chatBookings}</b><span className="sub">de {chat7.length} charlas en 7 días</span></div>
           <div className="kpi" style={{ animationDelay: '240ms' }}><small>Opiniones en Google</small><b>{reviews30.length}</b><span className="sub">últimos 30 días</span></div>
@@ -105,7 +105,7 @@ export function ManagerHome() {
                   <span className="grow small"><b>Señal pendiente: {shortName(s.clients.find((c) => c.id === a.clientId)?.name ?? '')}</b><br />{artist(a.artistId).short}, {dayLong(a.date)} {hhmm(a.start)}</span>
                 </button>
               ))}
-              {unanswered.length > 0 && <Link href="/panel/asistente" className="li clk"><Bot size={18} color="var(--sea)" /><span className="grow small"><b>{unanswered.length} preguntas que el asistente no supo responder</b><br />Enséñale la respuesta una vez y ya la tiene.</span></Link>}
+              {unanswered.length > 0 && <Link href="/panel/asistente" className="li clk"><Bot size={18} color="var(--sea)" /><span className="grow small"><b>{unanswered.length === 1 ? '1 pregunta que el asistente no supo responder' : `${unanswered.length} preguntas que el asistente no supo responder`}</b><br />Enséñale la respuesta una vez y ya la tiene.</span></Link>}
             </div>
           </div>
         </div>
@@ -201,7 +201,7 @@ export function ArtistHome({ id }: { id: ArtistId }) {
                 <div className="row wrapflex" style={{ gap: 6 }}>
                   <span className={`badge ${STATUS[next.status].tone}`}><Hourglass size={12} /> {STATUS[next.status].label}</span>
                   <span className={`badge ${nextC.consentSigned ? 'ok' : 'warn'}`}><ClipboardCheck size={12} /> {nextC.consentSigned ? 'Formulario firmado' : 'Formulario sin firmar'}</span>
-                  {nextP && <span className="badge"><Images size={12} /> {nextP.references.length} referencias</span>}
+                  {nextP && <span className="badge"><Images size={12} /> {pl(nextP.references.length, 'referencia', 'referencias')}</span>}
                 </div>
               </div>
               {nextP && nextP.references.length > 0 && <div className="ref-grid" style={{ width: 200 }}>{nextP.references.slice(0, 2).map((r) => <div key={r}><Pic id={r} sizes="100px" ar="1:1" alt="Referencia del cliente" /></div>)}</div>}

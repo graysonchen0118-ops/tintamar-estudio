@@ -89,3 +89,6 @@ export const euro = (n: number) => `${n.toLocaleString('es-ES')} €`;
 
 /** Capital on the first letter only: "Sábado 24 de octubre", never "Sábado 24 De Octubre". */
 export const cap = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
+
+/** "1 cita", "3 citas": the count and the noun agree. */
+export const pl = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;

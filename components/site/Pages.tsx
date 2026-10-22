@@ -124,7 +124,7 @@ function WeekStrip({ id }: { id: string }) {
         <div key={x.d} className={`wday ${!x.open ? 'off' : x.free ? 'free' : ''}`}>
           <span>{cap(DAY_SHORT[weekday(x.d)])}</span>
           <b>{dayNum(x.d)}</b>
-          <span>{!x.open ? 'No trabaja' : x.free ? `${x.free} huecos` : 'Completo'}</span>
+          <span>{!x.open ? 'No trabaja' : x.free ? `${x.free} ${x.free === 1 ? 'hueco' : 'huecos'}` : 'Completo'}</span>
         </div>
       ))}
     </div>

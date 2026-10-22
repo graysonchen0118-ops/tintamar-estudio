@@ -5,7 +5,7 @@ import { CloudCheck, Plug, Unplug, RefreshCw, ArrowUpRight, ArrowDownLeft, Calen
 import { useStore, wait } from '@/lib/store';
 import { STYLES, type ArtistId, type KbEntry } from '@/lib/mock/studio';
 import { PHOTOS } from '@/lib/photos';
-import { addDays, todayIso, ago, hhmm, toMin, dayLong, stampNow } from '@/lib/dates';
+import { addDays, todayIso, ago, hhmm, toMin, dayLong, stampNow, pl } from '@/lib/dates';
 import { conflicts } from '@/lib/availability';
 import { studioJsonLd } from '@/lib/site';
 import { SOURCE_COLOR } from '@/lib/panel';
@@ -42,8 +42,8 @@ export function GooglePage() {
                 {g?.connected ? (
                   <>
                     <div className="row wrapflex small" style={{ gap: 14 }}>
-                      <span><ArrowUpRight size={14} color="var(--sea)" style={{ verticalAlign: -2 }} /> {g.up} citas enviadas</span>
-                      <span><ArrowDownLeft size={14} color="var(--accent)" style={{ verticalAlign: -2 }} /> {g.down} ocupados recibidos</span>
+                      <span><ArrowUpRight size={14} color="var(--sea)" style={{ verticalAlign: -2 }} /> {pl(g.up, 'cita enviada', 'citas enviadas')}</span>
+                      <span><ArrowDownLeft size={14} color="var(--accent)" style={{ verticalAlign: -2 }} /> {pl(g.down, 'ocupado recibido', 'ocupados recibidos')}</span>
                     </div>
                     <span className="tiny muted">Calendario «{g.calendar}» · última revisión {g.lastSync ? ago(g.lastSync) : 'nunca'}</span>
                     <div className="row" style={{ gap: 8 }}>

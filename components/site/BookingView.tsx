@@ -319,7 +319,7 @@ export default function BookingView() {
                       <span>{cap(DAY_SHORT[weekday(x.date)])}</span>
                       <b>{dayNum(x.date)}</b>
                       <span>{monthShort(x.date)}</span>
-                      <span className="n">{x.slots.length ? `${x.slots.length} libres` : 'Completo'}</span>
+                      <span className="n">{x.slots.length ? `${x.slots.length} ${x.slots.length === 1 ? 'libre' : 'libres'}` : 'Completo'}</span>
                     </button>
                   ))}
                 </div>
