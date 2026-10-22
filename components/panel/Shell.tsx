@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import {
   LayoutDashboard, CalendarDays, Inbox, SquareKanban, Contact, CalendarCheck, Bot, SearchCheck, Gift, Smartphone, UsersRound, UserRound, LogOut, Menu, Globe, RotateCcw, Lock, PenTool, ArrowRight,
@@ -95,6 +95,7 @@ function Login() {
 export default function Shell({ children }: { children: ReactNode }) {
   const { s, ready, logout, reset, artist } = useStore();
   const path = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   useEffect(() => setOpen(false), [path]);
   if (!ready) return <div className="pn"><div /><div className="pn-body"><Sk h={60} /><Sk h={300} /></div></div>;
@@ -153,7 +154,7 @@ export default function Shell({ children }: { children: ReactNode }) {
               <div className="small strong" style={{ color: '#fff' }}>{me.name}</div>
               <div className="tiny" style={{ color: 'var(--cream-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{me.role}</div>
             </div>
-            <button className="icon-btn" style={{ color: 'var(--cream-muted)', width: 36, height: 36 }} aria-label="Cambiar de cuenta" title="Cambiar de cuenta" onClick={logout}><LogOut size={17} /></button>
+            <button className="icon-btn" style={{ color: 'var(--cream-muted)', width: 36, height: 36 }} aria-label="Cambiar de cuenta" title="Cambiar de cuenta" onClick={() => { logout(); router.push('/panel'); }}><LogOut size={17} /></button>
           </div>
           <button className="small row" style={{ gap: 6, color: '#8d8274', padding: '6px 10px' }} onClick={reset}><RotateCcw size={13} /> Reiniciar datos de la sesión</button>
         </aside>
